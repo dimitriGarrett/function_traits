@@ -1,6 +1,6 @@
 # function_traits
 
-A simple C++14 utility to get compile time information about functions, and lambdas. 
+A simple C++11 utility to get compile time information about functions, and lambdas. 
 
 Everything is compile time, so performance isn't an issue.
 
