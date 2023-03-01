@@ -6,7 +6,7 @@
 namespace function_traits
 {
 	template <typename Func>
-	struct function_traits : public function_traits<decltype(&std::decay_t<Func>::operator())>
+	struct function_traits : public function_traits<decltype(&std::decay<Func>::type::operator())>
 	{
 	};
 
@@ -20,7 +20,7 @@ namespace function_traits
 		template <std::size_t i = 0>
 		struct arg
 		{
-			using type = std::tuple_element_t<i, std::tuple<Args...>>;
+			using type = std::tuple_element<i, std::tuple<Args...>>::type;
 		};
 	};
 
