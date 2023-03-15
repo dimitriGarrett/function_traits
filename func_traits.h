@@ -45,4 +45,35 @@ namespace function_traits
 	{
 		using class_type = Class;
 	};
+
+	template <bool constant>
+	struct bool_constant
+	{
+		static constexpr bool value = constant;
+	};
+
+	struct true_type : bool_constant<true> {};
+	struct false_type : bool_constant<false> {};
+
+	template <typename, typename = void>
+	struct is_function : false_type {};
+
+	template <typename Func>
+	struct is_function<Func, std::void_t<decltype(&std::decay_t<Func>::operator())>> :
+		is_function<decltype(&std::decay_t<Func>::operator())> {};
+
+	template <typename R, typename... Args>
+	struct is_function<R(Args...)> : true_type {};
+
+	template <typename R, typename... Args>
+	struct is_function<R(*)(Args...)> : true_type {};
+
+	template <typename R, typename Class, typename... Args>
+	struct is_function<R(Class::*)(Args...)> : true_type {};
+
+	template <typename R, typename Class, typename... Args>
+	struct is_function<R(Class::*)(Args...) const> : true_type {};
+
+	template <typename Func>
+	static constexpr bool is_function_v = is_function<Func>::value;
 }
