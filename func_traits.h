@@ -44,7 +44,10 @@ namespace func_traits
 	};
 
 	template <typename R>
-	struct func_traits : public func_traits<decltype(&R::operator())> { };
+	struct func_traits : public func_traits<decltype(&R::operator())>
+	{
+		static constexpr bool is_lambda = true;
+	};
 
 	template <typename R, typename... Args>
 	struct func_traits<R(Args...)> : public function<false, false, R, Args...> { };
